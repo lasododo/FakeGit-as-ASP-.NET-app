@@ -1,0 +1,12 @@
+﻿@model PathViewModel
+
+@using(Html.BeginForm())
+{
+    @Html.TextBoxFor(s => s.FilePath);
+
+    <div class="has-error">
+        @Html.ValidationMessage("error-message");
+    </div>
+
+    <input type="submit" value="Generate report" />
+}

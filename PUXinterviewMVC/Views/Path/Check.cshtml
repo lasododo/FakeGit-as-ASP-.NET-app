@@ -1,0 +1,34 @@
+﻿@using PUXinterviewMVC.Models.WatchedFiles
+@model Dictionary<WatchedFileStatus, List<WatchedFile>>
+
+@{
+    ViewData["Title"] = "Hello!";
+}
+
+<div class="text-center">
+    <h2>i have no idea what is going on!</h2>
+    <div class="row">
+        @if (Model == null)
+        {
+            <h2>The new Dictionary was added to the list</h2>
+        }
+        else if (Model.Count == 0)
+        {
+            <h2>There was no edit in the file system</h2>
+        }
+        else
+        {
+            @foreach (var (status, files) in Model)
+            {
+                <div class="col-12">
+                    <h2> [ @status.ToString() ] </h2>
+
+                    @foreach (var file in files)
+                    {
+                        <p> - @file.FilePath </p>
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>
