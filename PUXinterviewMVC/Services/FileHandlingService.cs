@@ -6,7 +6,7 @@ namespace PUXinterviewMVC.Services
     public class FileHandlingService
     {
         private const string DirectoryName = ".fakegit";
-        private const string LogFile = "logs.log";
+        private const string LogFile = "logs.json";
 
         public async Task SerlializeToJSONAsync(List<WatchedFile> editList, string fakegit)
         {
@@ -68,7 +68,7 @@ namespace PUXinterviewMVC.Services
                     return true;
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 throw new ArgumentException("Something went wrong when working with fakegit directory", ex);
             }
@@ -82,22 +82,22 @@ namespace PUXinterviewMVC.Services
             return fileStatusType switch
             {
                 WatchedFileStatus.REMOVED => combined
-                            .Where(file => file.Value.Count == 1 && file.Value.First().Item2 == WatchedFileStatus.REMOVED)
-                            .Select(file => file.Value.First().Item1)
-                            .ToList(),
+                    .Where(file => file.Value.Count == 1 && file.Value.First().Item2 == WatchedFileStatus.REMOVED)
+                    .Select(file => file.Value.First().Item1)
+                    .ToList(),
                 WatchedFileStatus.ADDED => combined
-                                .Where(file => file.Value.Count == 1 && file.Value.First().Item2 == WatchedFileStatus.ADDED)
-                                .Select(file => file.Value.First().Item1)
-                                .ToList(),
+                    .Where(file => file.Value.Count == 1 && file.Value.First().Item2 == WatchedFileStatus.ADDED)
+                    .Select(file => file.Value.First().Item1)
+                    .ToList(),
                 WatchedFileStatus.MODIFIED => combined
-                                .Where(file => file.Value.Count == 2)
-                                .Where(file => file.Value
-                                    .Select(hash => BitConverter.ToString(hash.Item1.Hash))
-                                    .Distinct()
-                                    .Count() != 1)
-                                .Select(file => { var edit = file.Value.First().Item1; edit.Hash = file.Value.Last().Item1.Hash; return edit; })
-                                .Select(file => { file.Version++; return file; })
-                                .ToList(),
+                    .Where(file => file.Value.Count == 2)
+                    .Where(file => file.Value
+                        .Select(hash => BitConverter.ToString(hash.Item1.Hash))
+                        .Distinct()
+                        .Count() != 1)
+                    .Select(file => { var edit = file.Value.First().Item1; edit.Hash = file.Value.Last().Item1.Hash; return edit; })
+                    .Select(file => { file.Version++; return file; })
+                    .ToList(),
                 _ => throw new ArgumentException("Invalid WatchedFileStatus"),
             };
         }

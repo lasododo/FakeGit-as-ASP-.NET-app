@@ -30,8 +30,20 @@ namespace PUXinterviewMVC.Controllers
         [HttpPost, ActionName("Report")]
         public IActionResult ReportConfrim(PathViewModel model)
         {
-            if (ModelState.IsValid && Directory.Exists(Path.GetFullPath(model.FilePath)))
-                return RedirectToAction("Check", new { path = Path.GetFullPath(model.FilePath).ToString() });
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("error-message", $"Please fill in everything required!");
+                return View(model);
+            }
+
+            if (model.FilePath == null)
+            {
+                ModelState.AddModelError("error-message", $"Path should not be empty");
+                return View(model);
+            }
+
+            if (Directory.Exists(Path.GetFullPath(model.FilePath)))
+                return RedirectToAction(nameof(Check), new { path = Path.GetFullPath(model.FilePath).ToString() });
 
             ModelState.AddModelError("error-message", $"Path ({model.FilePath}) does not exist -> {Path.GetFullPath(model.FilePath)}");
             return View(model);
