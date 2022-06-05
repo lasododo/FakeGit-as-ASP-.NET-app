@@ -18,6 +18,11 @@ namespace PUXinterviewMVC.Services
             }
         }
 
+        public string GetFakeGitFolderPath(string path)
+        {
+            return Path.Combine(path, DirectoryName);
+        }
+
         public List<WatchedFile> GetJSONData(string fakegit)
         {
             var cachedFiles = new List<WatchedFile>();
@@ -54,17 +59,17 @@ namespace PUXinterviewMVC.Services
             return combined;
         }
 
-        public bool EnsureCreateded(string path, out string fakegit)
+        public bool EnsureCreateded(string path, out string fakeGitJSONPath)
         {
             try
             {
-                var dir = Path.Combine(path, DirectoryName);
-                fakegit = Path.Combine(dir, LogFile);
+                var fakegitDirPath = GetFakeGitFolderPath(path);
+                fakeGitJSONPath = Path.Combine(fakegitDirPath, LogFile);
 
-                if (!Directory.Exists(dir) || !File.Exists(fakegit))
+                if (!Directory.Exists(fakegitDirPath) || !File.Exists(fakeGitJSONPath))
                 {
-                    Directory.CreateDirectory(dir);
-                    File.Create(fakegit).Dispose();
+                    Directory.CreateDirectory(fakegitDirPath);
+                    File.Create(fakeGitJSONPath).Dispose();
                     return true;
                 }
             }

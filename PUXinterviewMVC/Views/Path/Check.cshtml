@@ -6,22 +6,20 @@
 }
 
 <div class="text-center">
-    <h2>i have no idea what is going on!</h2>
+
+    <h1>The Results:</h1>
+    
     <div class="row">
         @if (Model == null)
         {
-            <h2>The new Dictionary was added to the list</h2>
-        }
-        else if (Model.Count == 0)
-        {
-            <h2>There was no edit in the file system</h2>
+            <h4>The new Dictionary was added to the list</h4>
         }
         else
         {
             @foreach (var (status, files) in Model)
             {
                 <div class="col-12">
-                    <h2> [ @status.ToString() ] </h2>
+                    <h4> [ @status.ToString() ] </h4>
 
                     @foreach (var file in files)
                     {
